@@ -11,35 +11,35 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout repository
+      # Checkout code
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Step 2: Setup Node.js
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
-      # Step 3: Install backend dependencies
+      # Install backend dependencies
       - name: Install backend dependencies
         run: |
           cd backend
-          npm install
+          npm ci
 
-      # Step 4: Install frontend dependencies
+      # Install frontend dependencies
       - name: Install frontend dependencies
         run: |
           cd frontend
-          npm install
+          npm ci
 
-      # Step 5: Build frontend
+      # Build frontend
       - name: Build frontend
         run: |
           cd frontend
-          npm run build
+          npx react-scripts build
 
-      # Step 6: Build Docker images (optional)
+      # Optional: Build Docker images
       - name: Build Docker images
         run: |
           docker-compose build
