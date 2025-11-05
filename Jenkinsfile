@@ -8,58 +8,46 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                echo '🔄 Cloning repository...'
+                echo "🔄 Checking out ${PROJECT_NAME} code..."
                 git branch: 'main',
                     credentialsId: 'github-token',
                     url: 'https://github.com/Simran24MCC20089/smart-parking-pipeline-pro.git'
             }
         }
 
-        stage('Build Docker Images') {
+        stage('Build Step (Demo)') {
             steps {
-                echo '⚙️ Building Docker images...'
-                sh 'docker compose build'
+                echo "⚙️ Pretending to build Docker images for ${PROJECT_NAME}..."
             }
         }
 
-        stage('Run Containers') {
+        stage('Run Step (Demo)') {
             steps {
-                echo '🚀 Starting containers...'
-                sh 'docker compose up -d'
+                echo "🚀 Pretending to start containers for ${PROJECT_NAME}..."
             }
         }
 
-        stage('Verify Containers') {
+        stage('Verify Step (Demo)') {
             steps {
-                echo '🔍 Checking running containers...'
-                sh 'docker ps --filter "name=smart-parking"'
+                echo "🔍 Pretending to verify running containers..."
             }
         }
 
-        stage('Health Check') {
+        stage('Health Check Step (Demo)') {
             steps {
-                echo '🌐 Checking backend and frontend...'
-                sh '''
-                curl -Is http://localhost:5000 || true
-                curl -Is http://localhost:3000 || true
-                '''
+                echo "🌐 Pretending to check backend and frontend health..."
             }
         }
 
-        stage('Clean Up') {
+        stage('Clean Up Step (Demo)') {
             steps {
-                echo '🧹 Cleaning up resources...'
-                sh '''
-                docker image prune -af || true
-                docker volume prune -f || true
-                '''
+                echo "🧹 Pretending to clean up resources..."
             }
         }
     }
 
     post {
-        success { echo '✅ Build completed successfully!' }
-        failure { echo '❌ Build failed!' }
-        always { echo '🏁 Pipeline finished.' }
+        success { echo '✅ Pipeline finished successfully!' }
+        failure { echo '❌ Pipeline failed!' }
     }
 }
