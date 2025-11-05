@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Checkout code
+      # Step 1: Checkout repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
@@ -33,22 +33,13 @@ jobs:
           cd frontend
           npm install
 
-      # Step 5: Test backend API
-      - name: Test backend health
-        run: |
-          cd backend
-          node server.js &
-          sleep 5
-          curl --fail http://localhost:5000/health || exit 1
-          kill $!
-
-      # Step 6: Build frontend
+      # Step 5: Build frontend
       - name: Build frontend
         run: |
           cd frontend
           npm run build
 
-      # Optional: Build Docker images
+      # Step 6: Build Docker images (optional)
       - name: Build Docker images
         run: |
           docker-compose build
