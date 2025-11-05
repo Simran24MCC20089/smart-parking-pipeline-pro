@@ -39,7 +39,7 @@ jobs:
           cd frontend
           npx react-scripts build
 
-      # Optional: Build Docker images
+      # Optional: Build Docker images using Docker Compose V2
       - name: Build Docker images
         run: |
-          docker-compose build
+          docker compose build
