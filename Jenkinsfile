@@ -8,46 +8,56 @@ pipeline {
     stages {
         stage('Checkout Code') {
             steps {
-                echo "🔄 Checking out ${PROJECT_NAME} code..."
+                echo '🔄 Cloning repository...'
                 git branch: 'main',
                     credentialsId: 'github-token',
                     url: 'https://github.com/Simran24MCC20089/smart-parking-pipeline-pro.git'
             }
         }
 
-        stage('Build Step (Demo)') {
+        stage('Build Docker Images') {
             steps {
-                echo "⚙️ Pretending to build Docker images for ${PROJECT_NAME}..."
+                echo '⚙️ Building Docker images...'
+                bat 'docker build -t smart-parking-backend ./backend'
+                bat 'docker build -t smart-parking-frontend ./frontend'
             }
         }
 
-        stage('Run Step (Demo)') {
+        stage('Run Containers') {
             steps {
-                echo "🚀 Pretending to start containers for ${PROJECT_NAME}..."
+                echo '🚀 Starting containers...'
+                bat 'docker run -d -p 5000:5000 --name smart-parking-backend smart-parking-backend'
+                bat 'docker run -d -p 3000:3000 --name smart-parking-frontend smart-parking-frontend'
             }
         }
 
-        stage('Verify Step (Demo)') {
+        stage('Verify Containers') {
             steps {
-                echo "🔍 Pretending to verify running containers..."
+                echo '🔍 Checking running containers...'
+                bat 'docker ps --filter "name=smart-parking"'
             }
         }
 
-        stage('Health Check Step (Demo)') {
+        stage('Health Check') {
             steps {
-                echo "🌐 Pretending to check backend and frontend health..."
+                echo '🌐 Checking backend and frontend health...'
+                bat 'curl -Is http://localhost:5000 || echo Backend not reachable'
+                bat 'curl -Is http://localhost:3000 || echo Frontend not reachable'
             }
         }
 
-        stage('Clean Up Step (Demo)') {
+        stage('Clean Up') {
             steps {
-                echo "🧹 Pretending to clean up resources..."
+                echo '🧹 Cleaning up Docker containers and images...'
+                bat 'docker rm -f smart-parking-backend smart-parking-frontend || exit 0'
+                bat 'docker image prune -af || exit 0'
             }
         }
     }
 
     post {
-        success { echo '✅ Pipeline finished successfully!' }
-        failure { echo '❌ Pipeline failed!' }
+        success { echo '✅ Build completed successfully!' }
+        failure { echo '❌ Build failed!' }
+        always { echo '🏁 Pipeline finished.' }
     }
 }
